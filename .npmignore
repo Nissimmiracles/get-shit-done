@@ -1,0 +1,18 @@
+# TUI node_modules (users install their own)
+get-shit-done/tui/node_modules/
+
+# Development files
+*.backup
+.DS_Store
+.git
+.github
+.claude
+.planning
+_archive
+*.log
+
+# Test files
+test/
+tests/
+*.test.js
+*.spec.js
