@@ -73,6 +73,31 @@ Use AskUserQuestion:
 If "Continue without context": Proceed to step 5.
 If "Run discuss-phase first": Display `/gsd:discuss-phase {X}` and exit workflow.
 
+## 4.5. Check Userflow Map
+
+Use `has_userflow` from init JSON.
+
+**Skip this check if:** `--gaps` flag (gap closure doesn't need userflow).
+
+**If `has_userflow` is false AND NOT `--gaps` mode:**
+
+Use AskUserQuestion:
+- header: "No userflow"
+- question: "No USERFLOW.md found for Phase {X}. Userflow maps help the planner create tasks that match the user experience. Generate one first?"
+- options:
+  - "Generate userflow first (Recommended)" — Run /gsd:map-userflow {X} before planning
+  - "Skip, plan without userflow" — Plan using research + requirements only
+
+If "Generate userflow first":
+Display: `/gsd:map-userflow {X}` — then return to `/gsd:plan-phase {X}`
+Exit workflow.
+
+If "Skip, plan without userflow": Continue to step 5.
+
+**If `has_userflow` is true:**
+Display: `Using userflow map from: ${PHASE_DIR}/*-USERFLOW.md`
+Continue to step 5.
+
 ## 5. Handle Research
 
 **Skip if:** `--gaps` flag, `--skip-research` flag, or `research_enabled` is false (from init) without `--research` override.

@@ -141,6 +141,7 @@ const MODEL_PROFILES = {
   'gsd-verifier':             { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
   'gsd-plan-checker':         { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
   'gsd-integration-checker':  { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+  'gsd-userflow-mapper':      { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

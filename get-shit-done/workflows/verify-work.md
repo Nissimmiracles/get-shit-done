@@ -313,9 +313,61 @@ Present summary:
 
 **If issues > 0:** Proceed to `diagnose_issues`
 
-**If issues == 0:**
+**If issues == 0:** Proceed to `check_missing_userflows`
+</step>
+
+<step name="check_missing_userflows">
+**Check for phases missing USERFLOW.md across the project:**
+
+```bash
+ROADMAP=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs roadmap analyze)
 ```
-All tests passed. Ready to continue.
+
+Parse the phases array from the JSON. For each phase that has `has_context: true` or `plan_count > 0` but `has_userflow: false`, collect it as a missing-userflow phase. Only include phases that are NOT marked as complete (`disk_status` is not `complete`).
+
+**If missing userflow phases found:**
+
+```
+All tests passed!
+
+## Missing Userflow Maps
+
+{N} active phase(s) have no USERFLOW.md:
+
+| Phase | Name | Status | Has Context |
+|-------|------|--------|-------------|
+| {num} | {name} | {disk_status} | {✓ / -} |
+
+Userflow maps help the planner create tasks that match the user experience.
+
+- `/gsd:map-userflow {phase}` — generate for a specific phase
+```
+
+Use AskUserQuestion:
+- header: "Userflows"
+- question: "Generate missing userflow maps?"
+- multiSelect: false
+- options:
+  - "Generate all missing" — Run /gsd:map-userflow for each phase listed
+  - "Skip for now" — Continue without generating
+
+If "Generate all missing":
+For each missing phase (in order), spawn mapper:
+```
+Task(
+  prompt="Run /gsd:map-userflow {phase_number}",
+  subagent_type="general-purpose",
+  description="Map userflows Phase {phase_number}"
+)
+```
+Display progress after each completes.
+
+If "Skip for now": Continue to next steps.
+
+**If no missing userflows:**
+
+```
+All tests passed. All active phases have userflow maps.
 
 - `/gsd:plan-phase {next}` — Plan next phase
 - `/gsd:execute-phase {next}` — Execute next phase

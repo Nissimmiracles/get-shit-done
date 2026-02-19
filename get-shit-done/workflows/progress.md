@@ -120,6 +120,7 @@ Present:
 Phase [N] of [total]: [phase-name]
 Plan [M] of [phase-total]: [status]
 CONTEXT: [✓ if has_context | - if not]
+USERFLOW: [✓ if has_userflow | - if not]
 
 ## Key Decisions Made
 - [decision 1 from STATE.md]
@@ -206,13 +207,36 @@ Check if `{phase_num}-CONTEXT.md` exists in phase directory.
 
 **If CONTEXT.md exists:**
 
+Check `has_userflow` from roadmap analyze.
+
+**If CONTEXT.md exists but USERFLOW.md does NOT:**
+
 ```
 ---
 
 ## ▶ Next Up
 
 **Phase {N}: {Name}** — {Goal from ROADMAP.md}
-<sub>✓ Context gathered, ready to plan</sub>
+<sub>✓ Context gathered | No userflow map yet</sub>
+
+`/gsd:map-userflow {phase-number}` — map user journeys before planning
+
+or `/gsd:plan-phase {phase-number}` — plan directly (skip userflow)
+
+<sub>`/clear` first → fresh context window</sub>
+
+---
+```
+
+**If both CONTEXT.md and USERFLOW.md exist:**
+
+```
+---
+
+## ▶ Next Up
+
+**Phase {N}: {Name}** — {Goal from ROADMAP.md}
+<sub>✓ Context gathered, ✓ Userflows mapped, ready to plan</sub>
 
 `/gsd:plan-phase {phase-number}`
 
